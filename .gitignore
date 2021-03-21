@@ -1,1 +1,7 @@
+__pycache__
+.env
 .idea
+venv
+.vscode
+pytest.ini
+*.pem

@@ -69,7 +69,7 @@ def submit(request):
 
         yearsDBList = list(Answers.objects.values_list('years', flat=True))
         keys = list(dict.fromkeys(yearsDBList))
-        keys.sort
+        keys.sort()
 
         yearsList = []
 

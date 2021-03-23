@@ -1,32 +1,31 @@
 <html>
-<head>
-    <title>Atom Juice Take Home Poll | Answers</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-</head>
-
-</html>
-<body>
-    <div class="container-fluid bg-success p-5 mb-5">
-        <div class="container">
-            <h1 class="text-light">Answers</h1>
+    <head>
+        <title>Atom Juice Take Home Poll | Answers</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    </head>
+    <body>
+        <div class="container-fluid bg-success p-5 mb-5">
+            <div class="container">
+                <h1 class="text-light">Answers</h1>
+            </div>
         </div>
-    </div>
-    <div class="container p-5 mb-5">
-    <table style="width:100%">
-        <tr>
-            <th>Which part of the stack do you prefer?</th>
-            <th>How many programming languages do you have experience with?</th>
-            <th>How long have you been programming for?</th>
-            <th>Which SQL database do you have most experience with?</th>
-        </tr>
-        {% for answer in answers_list %}
+        <div class="container p-5 mb-5">
+        <table style="width:100%">
             <tr>
-                <td>{{ answer.get_stack_display }}</td>
-                <td>{{ answer.get_exp_display }}</td>
-                <td>{{ answer.years }} Years</td>
-                <td>{{ answer.get_db_display }}</td>
+                <th>Which part of the stack do you prefer?</th>
+                <th>How many programming languages do you have experience with?</th>
+                <th>How long have you been programming for?</th>
+                <th>Which SQL database do you have most experience with?</th>
             </tr>
-        {% endfor %}
-    </table>
-    </div>
-</body>
+            {% for answer in answers_list %}
+                <tr>
+                    <td>{{ answer.get_stack_display }}</td>
+                    <td>{{ answer.get_exp_display }}</td>
+                    <td>{{ answer.years }} Years</td>
+                    <td>{{ answer.get_db_display }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        </div>
+    </body>
+</html>

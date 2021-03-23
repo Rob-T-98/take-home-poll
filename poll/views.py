@@ -6,31 +6,45 @@ from django.template import loader
 from .models import Answers
 
 class submitPageData():
-    totalAnswers= 0 
-
-    q1none = 0
-    q1front = 0
-    q1back = 0
-    q1both = 0
-
-    q2none = 0
-    q20 = 0
-    q212 = 0 
-    q234 = 0
-    q256 = 0
-    q27 = 0
-
-    q4none = 123
-    q4p=123
-    q4m = 567
-    q4o=546
-    q4s=6546
-
+    stackList = 0
     yearsList = 0
+    langList = 0
+    dbList = 0
 
-class yearsItem():
+class dataItem():
     key = 0
     value = 0
+
+def createList(keys,list,numAnswers):
+    newList=[]
+    for key in keys:
+            year = dataItem()
+            num = list.count(key)
+            year.key = key
+            year.value = num/numAnswers*100
+            newList.append(year)
+        
+    return newList
+
+def convertReadable(list):
+    dictionary = {'none':'None Selected',
+        'pg':'PostgreSQL',
+        'my':'MySQL',
+        'o':'Oracle',
+        'sqls':'SQL Server',
+        'none':'None Selected',
+        '0':'0',
+        '1-2':'1-2',
+        '3-4':'3-4',
+        '5-6':'5-6',
+        '7+':'7+',
+        'none':'None Selected',
+        'Front': 'Frontend',
+        'Back':'Backend',
+        'Both':'Both'
+    }
+
+    return [dictionary.get(item,item) for item in list]
 
 
 
@@ -49,36 +63,33 @@ def submit(request):
 
         data = submitPageData()
         data.totalAnswers = numAnswers
-        data.q1None = Answers.objects.filter(stack='none').count()/numAnswers*100
-        data.q1front = Answers.objects.filter(stack='Front').count()/numAnswers*100
-        data.q1back = Answers.objects.filter(stack='Back').count()/numAnswers*100
-        data.q1both = Answers.objects.filter(stack='Both').count()/numAnswers*100
 
-        data.q2none = Answers.objects.filter(exp='none').count()/numAnswers*100
-        data.q20 = Answers.objects.filter(exp='0').count()/numAnswers*100
-        data.q212 = Answers.objects.filter(exp='1-2').count()/numAnswers*100
-        data.q234 = Answers.objects.filter(exp='3-4').count()/numAnswers*100
-        data.q256 = Answers.objects.filter(exp='5-6').count()/numAnswers*100
-        data.q27 = Answers.objects.filter(exp='7+').count()/numAnswers*100
+        stackList = convertReadable(list(Answers.objects.values_list('stack', flat=True)))
+        keys = list(dict.fromkeys(stackList))
+        keys.sort()
 
-        data.q4none = Answers.objects.filter(db='none').count()/numAnswers*100
-        data.q4p = Answers.objects.filter(db='pg').count()/numAnswers*100
-        data.q4m = Answers.objects.filter(db='my').count()/numAnswers*100
-        data.q4o = Answers.objects.filter(db='o').count()/numAnswers*100
-        data.q4s = Answers.objects.filter(db='sqls').count()/numAnswers*100
+        stackList = createList(keys,stackList,numAnswers)
+        data.stackList = stackList
 
-        yearsDBList = list(Answers.objects.values_list('years', flat=True))
+        langList = convertReadable(list(Answers.objects.values_list('exp', flat=True)))
+        keys = list(dict.fromkeys(langList))
+        keys.sort()
+
+        langList = createList(keys,langList,numAnswers)
+        data.langList = langList
+
+        dbList = convertReadable(list(Answers.objects.values_list('db', flat=True)))
+        keys = list(dict.fromkeys(dbList))
+        keys.sort()
+
+        dbList = createList(keys,dbList,numAnswers)
+        data.dbList = dbList
+
+        yearsDBList = convertReadable(list(Answers.objects.values_list('years', flat=True)))
         keys = list(dict.fromkeys(yearsDBList))
         keys.sort()
 
-        yearsList = []
-
-        for key in keys:
-            year = yearsItem()
-            num = yearsDBList.count(key)
-            year.key = key
-            year.value = num/numAnswers*100
-            yearsList.append(year)
+        yearsList = createList(keys,yearsDBList,numAnswers)
         
         data.yearsList = yearsList
 
